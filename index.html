@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sua Historinha — Livro Personalizado para Crianças</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ik.imagekit.io">
@@ -45,6 +48,21 @@
   <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-xcod-sck data-utmify-prevent-subids async defer></script>
 
   <style>
+    /* Ocultar elementos e badges injetados pelo Netlify */
+    iframe[src*="netlify"],
+    iframe[id*="netlify"],
+    iframe[class*="netlify"],
+    .netlify-badge,
+    #netlify-drawer,
+    [data-netlify-deploy-id],
+    div[class*="netlify"],
+    a[href*="netlify.com"] img {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     :root {
       --bg:        #FFFFFF;
       --bg-soft:   #FAFAFC;
@@ -1742,6 +1760,14 @@ function closeCustomScenario(){
   document.getElementById('q-setting-custom').value='';
 }
 document.addEventListener('DOMContentLoaded',()=>{
+  // Remove badge ou drawer injetado pelo Netlify
+  const cleanNetlify = () => {
+    document.querySelectorAll('iframe[src*="netlify"], #netlify-drawer, .netlify-badge, [data-netlify-deploy-id], div[class*="netlify"], a[href*="netlify.com"]').forEach(el => el.remove());
+  };
+  cleanNetlify();
+  setTimeout(cleanNetlify, 800);
+  setTimeout(cleanNetlify, 2500);
+
   // Captura manual da tela intro — não passa por goTo()
   window.posthog&&posthog.capture('Historinha_Intro',{step_raw:'intro',session_id:SESSION_EID});
 
