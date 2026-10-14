@@ -282,7 +282,7 @@
     .btn-next:hover { filter: brightness(.92) }
     .btn-next:active { transform: scale(.98) }
     .btn-next:disabled { background: #E4E4EC; color: #B5B5C7; cursor: not-allowed; filter: none }
-    .btn-cta { width: 100%; padding: 17px; background: var(--green); border: none; border-radius: var(--radius-md); color: #fff; font-weight: 600; font-size: 15.5px; letter-spacing: .5px; text-transform: uppercase; cursor: pointer; transition: filter .15s, transform .1s; box-shadow: none; display: flex; align-items: center; justify-content: center; gap: 9px; text-align: center }
+    .btn-cta { width: 100%; padding: 17px; background: var(--green); border: none; border-radius: var(--radius-md); color: #fff; font-weight: 600; font-size: 15.5px; letter-spacing: .5px; text-transform: uppercase; cursor: pointer; transition: filter .15s, transform .1s; box-shadow: none; display: flex; align-items: center; justify-content: center; gap: 9px; text-align: center; text-decoration: none; box-sizing: border-box }
     .btn-cta:hover { filter: brightness(.92) }
     .btn-cta:active { transform: scale(.98) }
     .btn-cta:disabled { background: #E4E4EC; color: #B5B5C7; cursor: not-allowed; filter: none }
@@ -1215,7 +1215,7 @@
         </div>
 
         <div class="price-pick-wrap">
-          <button class="btn-cta btn-pulse" id="btnFinalCTA" onclick="irParaCheckout()">Quero o Livro <span class="child-name-dyn"></span> Agora</button>
+          <a href="https://pay.cakto.com.br/5wrdhmj_1201612" class="btn-cta btn-pulse" id="btnFinalCTA" onclick="irParaCheckout(event)">Quero o Livro <span class="child-name-dyn"></span> Agora</a>
           <div class="price-pick-info">Você será direcionado para o pagamento seguro</div>
         </div>
 
@@ -1263,7 +1263,7 @@
         <div class="faq-item"><div class="faq-q" onclick="togFaq(this)">Quanto tempo leva pra receber?</div><div class="faq-a">Em até 24h após a confirmação do pagamento, direto no seu e-mail.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="togFaq(this)">E se eu não gostar do resultado?</div><div class="faq-a">Garantia de 7 dias. Basta enviar um e-mail e devolvemos 100% do seu dinheiro. Sem burocracia.</div></div>
 
-        <button class="btn-cta btn-pulse" style="margin-top:28px" onclick="irParaCheckout()">Sim, Quero o Livro <span class="child-name-dyn"></span>!</button>
+        <a href="https://pay.cakto.com.br/5wrdhmj_1201612" class="btn-cta btn-pulse" style="margin-top:28px" onclick="irParaCheckout(event)">Sim, Quero o Livro <span class="child-name-dyn"></span>!</a>
       </div>
 
       <!-- ══════════════════════════════════
@@ -1596,7 +1596,8 @@ const SESSION_EID = 'ev_' + Date.now() + '_' + Math.random().toString(36).slice(
 const TOTAL_STEPS = 11;
 const IMG_BASE = 'https://ik.imagekit.io/alvoecom/';
 
-// Checkout agora é embutido — sem links externos
+// Link de Checkout Cakto
+const CHECKOUT_URL = 'https://pay.cakto.com.br/5wrdhmj_1201612';
 
 // ════════════════════════════════════════════
 //  IMAGE SETS — CONDICIONAIS POR GÊNERO
@@ -2492,8 +2493,43 @@ function iniciarAppmax(){
 }
 
 // ── GOTO — adicionar sc-checkout e sc-aprovado ────────────────────────────────
-// ── TRANSIÇÃO RÁPIDA PRO CHECKOUT ─────────────────────────────────────────────
-function irParaCheckout(){
+// ── CHECKOUT CAKTO — REDIRECIONAMENTO COM UTMS ───────────────────────────────
+const CHECKOUT_BASE_URL = 'https://pay.cakto.com.br/5wrdhmj_1201612';
+
+function getCheckoutUrl(overrideUrl){
+  const dest = overrideUrl || CHECKOUT_BASE_URL;
+  try {
+    const url = new URL(dest);
+    // Preserva parâmetros da URL atual (UTMs, src, sck, etc.)
+    const curParams = new URLSearchParams(window.location.search);
+    curParams.forEach((val, key) => {
+      if(!url.searchParams.has(key)){
+        url.searchParams.set(key, val);
+      }
+    });
+
+    // Se houver dados do quiz (email, nome), anexa ao checkout
+    const email = (typeof getVal === 'function' ? getVal('q-email') : '') || '';
+    const momName = (typeof getVal === 'function' ? getVal('q-mom-name') : '') || '';
+    if(email && !url.searchParams.has('email')) url.searchParams.set('email', email);
+    if(momName && !url.searchParams.has('name')) url.searchParams.set('name', momName);
+
+    return url.toString();
+  } catch(_) {
+    return dest;
+  }
+}
+
+function irParaCheckout(e){
+  if(e && e.preventDefault) e.preventDefault();
+
+  if(!window._icFired){
+    window._icFired = true;
+    const checkoutVal = (typeof calcTotal === 'function' ? calcTotal().tot : 14.90);
+    window.fbq && fbq('track','InitiateCheckout',{value:checkoutVal,currency:'BRL',num_items:1,event_id:'ic_'+SESSION_EID});
+  }
+  window.posthog && posthog.capture('Historinha_Checkout',{step_raw:'checkout',session_id:SESSION_EID});
+
   goTo('redirect');
   const fill = document.getElementById('redirectFill');
   if(fill){
@@ -2503,7 +2539,13 @@ function irParaCheckout(){
     fill.style.transition = '';
     requestAnimationFrame(()=>{ fill.style.width = '100%'; });
   }
-  setTimeout(()=>{ goTo('checkout'); }, 1100);
+
+  const linkHref = (e && e.currentTarget && e.currentTarget.href) ? e.currentTarget.href : CHECKOUT_BASE_URL;
+  const target = getCheckoutUrl(linkHref);
+
+  setTimeout(()=>{
+    window.location.href = target;
+  }, 1000);
 }
 
 const _goToOrig = goTo;
@@ -2512,27 +2554,7 @@ window.goTo = function(s){
   if(siteHeader) siteHeader.style.display = (s === 'checkout' || s === 'aprovado') ? 'none' : 'flex';
 
   if(s === 'checkout'){
-    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
-    document.getElementById('sc-checkout').classList.add('active');
-    step = 'checkout';
-    document.getElementById('progWrap').style.display = 'none';
-    document.getElementById('stepCount').textContent = '';
-    document.getElementById('overlay').scrollTop = 0;
-
-    const emailQuiz = getVal('q-email');
-    if(emailQuiz){ const fe = document.getElementById('fEmail'); if(fe) fe.value = emailQuiz; }
-
-    document.getElementById('paymentMethodCard').style.display = 'block';
-    document.getElementById('pixDisplay').style.display = 'none';
-
-    syncCheckoutReceipt();
-    selMethod('pix');
-
-    if(!window._icFired){
-      window._icFired = true;
-      window.fbq && fbq('track','InitiateCheckout',{value:calcTotalCheckout(),currency:'BRL',num_items:1,event_id:'ic_'+SESSION_EID});
-    }
-    window.posthog && posthog.capture('Historinha_Checkout',{step_raw:'checkout',session_id:SESSION_EID});
+    window.location.href = getCheckoutUrl();
     return;
   }
   if(s === 'aprovado'){
