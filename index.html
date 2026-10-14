@@ -1132,60 +1132,10 @@
             <img src="https://ik.imagekit.io/alvoecom/icone-final.webp" alt="" onerror="this.style.display='none'">
           </div>
           <div class="fb-text">Prontinho! As últimas peças da história <span class="child-name-dyn"></span> já estão no lugar.</div>
-          <div class="fb-sub">Só falta deixar o presente ainda mais especial.</div>
+          <div class="fb-sub">Vamos preparar o livro de <span class="child-name-solo"></span> agora!</div>
           <div class="fb-loader" id="fbFinalLoader"><div class="fb-loader-track"><div class="fb-loader-fill" id="fbFinalFill"></div></div></div>
           <div class="fb-check" id="fbFinalCheck" style="display:none"><svg viewBox="0 0 24 24"><polyline points="5 12.5 9.5 17 19 7.5"/></svg></div>
-          <button class="btn-cta" id="fbFinalBtn" style="display:none" onclick="goTo(11)">Deixar Ainda Mais Especial</button>
-        </div>
-      </div>
-
-      <!-- ══════════════════════════════════
-           11 — ADICIONAIS
-      ══════════════════════════════════ -->
-      <div class="screen" id="sc-11">
-        <div class="quiz-card">
-          <div class="step-title">Deixe o presente <em class="child-name-dyn"></em> ainda mais completo</div>
-          <div class="step-sub">Aproveite o desconto de Dia das Crianças, adicione também os presentes abaixo:</div>
-
-          <div class="included-tag">✓ Já incluso: 1 Livro Personalizado de 20 Páginas Ilustrado · PDF para ler e imprimir</div>
-
-          <div class="addon-section-tag">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            95% das famílias também levam
-          </div>
-
-          <div class="addon-card" id="addon-colorir" onclick="togAddon('colorir')">
-            <div class="addon-body">
-              <div class="addon-thumb"><img loading="lazy" decoding="async" src="https://ik.imagekit.io/alvoecom/colorir.webp" alt="Versão para colorir"><span class="addon-ribbon">Mais Escolhido</span></div>
-              <div class="addon-info">
-                <div class="addon-name">Versão para Colorir</div>
-                <div class="addon-desc">As mesmas cenas em traços para a criança pintar. Perfeito para imprimir e brincar.</div>
-                <div class="addon-price-row"><span class="addon-price-old">R$ 14,90</span><span class="addon-price">R$ 7,90</span></div>
-              </div>
-            </div>
-            <div class="addon-action"><div class="addon-check" id="adcheck-colorir"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div><span class="addon-action-txt">Quero a versão para colorir também</span></div>
-          </div>
-
-          <div class="addon-card" id="addon-expressa" onclick="togAddon('expressa')">
-            <div class="addon-body">
-              <div class="addon-thumb"><img loading="lazy" decoding="async" src="https://ik.imagekit.io/alvoecom/entrega-expressa.webp" alt="Entrega expressa"></div>
-              <div class="addon-info">
-                <div class="addon-name">Prioridade: Entrega Expressa</div>
-                <div class="addon-desc">Seu pedido pula a fila e é finalizado com prioridade máxima.</div>
-                <div class="addon-price-row"><span class="addon-price-old">R$ 9,90</span><span class="addon-price">R$ 3,90</span></div>
-              </div>
-            </div>
-            <div class="addon-action"><div class="addon-check" id="adcheck-expressa"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div><span class="addon-action-txt">Quero prioridade na entrega também</span></div>
-          </div>
-
-          <div class="receipt" id="rec-11"></div>
-        </div>
-        <div class="nav-stack">
-          <button class="btn-cta" onclick="goTo('loading')">Ver o Livro <span class="child-name-dyn"></span></button>
-          <button class="btn-mini-back" onclick="voltarEtapa()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Voltar
-          </button>
+          <button class="btn-cta" id="fbFinalBtn" style="display:none" onclick="goTo('loading')">Ver o Livro <span class="child-name-dyn"></span></button>
         </div>
       </div>
 
@@ -1650,9 +1600,9 @@
 
 <script>
 const PRICES = { base: 39.90, discount: 25.00, colorir: 7.90, expressa: 3.90 };
-let step = 'intro', addons = { colorir: false, expressa: false }, hasDiscount = false;
+let step = 'intro', addons = { colorir: false, expressa: false }, hasDiscount = true;
 const SESSION_EID = 'ev_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-const TOTAL_STEPS = 11;
+const TOTAL_STEPS = 10;
 const IMG_BASE = 'https://ik.imagekit.io/alvoecom/';
 
 // Link de Checkout Cakto
@@ -1858,8 +1808,7 @@ const PREV_STEP_MAP = {
   9: 8,
   10: 9,
   'fb-final': 10,
-  11: 10,
-  'result': 11
+  'result': 10
 };
 
 function updateHeaderBackBtn(s){
@@ -1976,17 +1925,11 @@ function goTo(s){
     9:             'Historinha_Personalidade',
     10:            'Historinha_EmailMae',
     'fb-final':    'Historinha_FbFinal',
-    11:            'Historinha_Upsell',
     'loading':     'Historinha_Loading',
     'result':      'Historinha_Resultado',
   };
   const eventName = STEP_EVENTS[s] || ('Historinha_Step_' + String(s));
   window.posthog&&posthog.capture(eventName,{step_raw:String(s),session_id:SESSION_EID});
-
-  if(s===11&&!hasDiscount&&!window._popupShown){
-    window._popupShown=true;
-    setTimeout(()=>{const p=document.getElementById('couponPopup');p.style.display='flex';setTimeout(()=>p.classList.add('active'),10)},900);
-  }
 
   if(s==='fb-rosto'){ runFbLoader('fbRostoLoader','fbRostoFill','fbRostoCheck','fbRostoBtn',2300) }
   if(s==='fb-final'){ runFbLoader('fbFinalLoader','fbFinalFill','fbFinalCheck','fbFinalBtn',2300) }
@@ -2132,7 +2075,6 @@ function updatePriceResultTag(){
     : 'Desconto de Dia das Crianças ativo nesta sessão';
 }
 function updateReceipts(){
-  syncReceipt('rec-11');
   const pr=document.getElementById('price-result');if(pr)pr.textContent=fmtBRL(calcTotal().tot);
   updatePriceResultTag();
 }

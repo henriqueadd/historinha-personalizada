@@ -16,10 +16,9 @@ Este projeto é uma réplica da aplicação web do **Sua Historinha**, um funil 
   5. **Cenário**: Floresta Encantada, Reino Encantado, Fazendinha, Fundo do Mar ou cenário livre customizado.
   6. **Personalidade**: Informações para enriquecer a história.
   7. **Dedicatória**: Nome de quem presenteia e e-mail de entrega.
-  8. **Upsells (Adicionais)**: Versão para colorir e entrega expressa.
-  9. **Simulação de Criação**: Barra de progresso animada com micro-perguntas de engajamento.
-  10. **Resultado & Paywall**: Mockup 3D interativo do livro gerado em tempo real, cronômetro de urgência e bônus.
-  11. **Checkout Cakto**: Redirecionamento integrado para o checkout Cakto (`https://pay.cakto.com.br/5wrdhmj_1201612`) com transição suave, preservação de UTMs e disparo de eventos de conversão.
+  8. **Simulação de Criação**: Barra de progresso animada com micro-perguntas de engajamento.
+  9. **Resultado & Paywall**: Mockup 3D interativo do livro gerado em tempo real, cronômetro de urgência e bônus.
+  10. **Checkout Cakto**: Redirecionamento integrado para o checkout Cakto (`https://pay.cakto.com.br/5wrdhmj_1201612`) com transição suave, preservação de UTMs e disparo de eventos de conversão.
 
 ## 🛠️ Tecnologias Utilizadas
 
