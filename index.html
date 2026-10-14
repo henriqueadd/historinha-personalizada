@@ -99,8 +99,30 @@
     .card-wrap { width: 100%; max-width: 480px }
 
     /* ── HEADER (logo fixo em toda tela) ── */
-    .site-header { display: flex; justify-content: center; padding: 2px 0 16px }
+    .site-header { position: relative; display: flex; align-items: center; justify-content: center; padding: 2px 0 16px; min-height: 48px }
     .brand-logo { height: 66px; width: auto; display: block }
+    .btn-header-back {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .15s, transform .1s, border-color .15s;
+      padding: 0;
+      z-index: 20;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-header-back:hover { background: var(--border) }
+    .btn-header-back:active { transform: translateY(-50%) scale(.92) }
 
     /* ── PROGRESS ── */
     .prog-wrap { margin-bottom: 18px }
@@ -120,7 +142,8 @@
     .step-title em { font-style: normal; color: var(--coral); font-weight: 600 }
     .step-sub { font-size: 15px; font-weight: 400; color: var(--ink-soft); text-align: center; margin-bottom: 20px; line-height: 1.1 }
 
-    .mini-back { font-size: 13px; font-weight: 600; color: var(--ink-soft); cursor: pointer; margin-top: 18px; display: inline-flex; align-items: center; gap: 4px; user-select: none }
+    .mini-back { font-size: 13px; font-weight: 600; color: var(--ink-soft); cursor: pointer; margin-top: 18px; display: inline-flex; align-items: center; gap: 6px; user-select: none; transition: color .15s }
+    .mini-back:hover { color: var(--ink) }
     .mini-back:active { opacity: .6 }
 
     /* ── INPUTS ── */
@@ -721,6 +744,11 @@
     <div class="card-wrap">
 
       <div class="site-header">
+        <button type="button" class="btn-header-back" id="btnHeaderBack" onclick="voltarEtapa()" aria-label="Voltar para a etapa anterior" style="display:none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
         <img class="brand-logo" src="https://ik.imagekit.io/alvoecom/ChatGPT%20Image%2017%20de%20jun.%20de%202026,%2014_54_47.png" alt="Sua Historinha" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'">
       </div>
 
@@ -776,6 +804,10 @@
         </div>
 
         <button class="btn-cta btn-pulse" style="margin-top:22px" onclick="goTo(1)">Vamos Começar! →</button>
+        <div class="mini-back" onclick="voltarEtapa()" style="margin-top:14px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
 
         <div class="badge-row">
           <div class="mini-badge"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Compra 100% Segura</div>
@@ -819,6 +851,10 @@
           </div>
         </div>
         <div class="nav"><button class="btn-next" id="bn-1" disabled onclick="goTo(2)">Vamos Criar o Personagem <span class="child-name-dyn"></span>!</button></div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -848,7 +884,10 @@
           </div>
           <input type="hidden" id="q-gender">
         </div>
-        <div class="mini-back" onclick="goTo(1)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -861,7 +900,10 @@
           <div class="tile-list" id="skin-grid"></div>
           <input type="hidden" id="q-skin">
         </div>
-        <div class="mini-back" onclick="goTo(2)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -874,7 +916,10 @@
           <div class="img-grid" id="haircolor-grid"></div>
           <input type="hidden" id="q-hair-color">
         </div>
-        <div class="mini-back" onclick="goTo(3)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -887,7 +932,10 @@
           <div class="img-grid col1" id="hairtype-grid"></div>
           <input type="hidden" id="q-hair-type">
         </div>
-        <div class="mini-back" onclick="goTo(4)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -917,7 +965,10 @@
           </div>
           <input type="hidden" id="q-eyes">
         </div>
-        <div class="mini-back" onclick="goTo(5)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -962,7 +1013,10 @@
           </div>
           <input type="hidden" id="q-moral">
         </div>
-        <div class="mini-back" onclick="goTo(6)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -1005,7 +1059,10 @@
         <div class="nav" id="customScenarioNav" style="display:none">
           <button class="btn-next" id="btnCustomScenario" style="flex:1" disabled onclick="goTo('fb-aventura')">Show, é Nesse Cenário que <span class="child-name-solo"></span> Vive!</button>
         </div>
-        <div class="mini-back" onclick="goTo(7)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -1036,7 +1093,10 @@
           </div>
         </div>
         <div class="nav"><button class="btn-next" onclick="goTo(10)">Perfeito, <span class="child-name-solo"></span> Está Ganhando Vida! →</button></div>
-        <div class="mini-back" onclick="goTo(8)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -1057,7 +1117,10 @@
           </div>
         </div>
         <div class="nav"><button class="btn-next" id="bn-10" disabled onclick="sendQuizToN8n();goTo('fb-final')">Quase lá! Finalizar Personalização</button></div>
-        <div class="mini-back" onclick="goTo(9)">← Voltar</div>
+        <div class="mini-back" onclick="voltarEtapa()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Voltar
+        </div>
       </div>
 
       <!-- ══════════════════════════════════
@@ -1119,7 +1182,10 @@
         </div>
         <div class="nav-stack">
           <button class="btn-cta" onclick="goTo('loading')">Ver o Livro <span class="child-name-dyn"></span></button>
-          <button class="btn-mini-back" onclick="goTo('fb-final')">Voltar</button>
+          <button class="btn-mini-back" onclick="voltarEtapa()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Voltar
+          </button>
         </div>
       </div>
 
@@ -1775,6 +1841,98 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ════════════════════════════════════════════
+//  CONTROLE DE NAVEGAÇÃO E VOLTAR
+// ════════════════════════════════════════════
+const PREV_STEP_MAP = {
+  'social': 'intro',
+  1: 'social',
+  2: 1,
+  3: 2,
+  4: 3,
+  5: 4,
+  6: 5,
+  'fb-rosto': 6,
+  7: 6,
+  8: 7,
+  'fb-aventura': 8,
+  9: 8,
+  10: 9,
+  'fb-final': 10,
+  11: 10,
+  'result': 11
+};
+
+function updateHeaderBackBtn(s){
+  const btn = document.getElementById('btnHeaderBack');
+  if(!btn) return;
+  const hideScreens = ['intro', 'loading', 'redirect', 'checkout', 'aprovado'];
+  btn.style.display = hideScreens.includes(s) ? 'none' : 'inline-flex';
+}
+
+function restoreGridSelections(){
+  const map = [
+    { grid: 'skin-grid', val: getVal('q-skin'), selector: '.tile-card' },
+    { grid: 'haircolor-grid', val: getVal('q-hair-color'), selector: '.img-chip' },
+    { grid: 'hairtype-grid', val: getVal('q-hair-type'), selector: '.img-chip' },
+    { grid: 'eyes-grid', val: getVal('q-eyes'), selector: '.img-chip' },
+    { grid: 'moral-grid', val: getVal('q-moral'), selector: '.tile-card' },
+    { grid: 'setting-grid', val: getVal('q-setting'), selector: '.tile-card' },
+    { grid: 'age-grid', val: getVal('q-age'), selector: '.opt-chip' },
+    { grid: 'gender-grid', val: getVal('q-gender'), selector: '.gender-card' }
+  ];
+  map.forEach(item => {
+    if(!item.val) return;
+    const g = document.getElementById(item.grid);
+    if(!g) return;
+    g.querySelectorAll(item.selector).forEach(el => {
+      const onclickAttr = el.getAttribute('onclick') || '';
+      if(onclickAttr.includes(`'${item.val}'`)){
+        el.classList.add('sel');
+      }
+    });
+  });
+}
+
+let _isHistoryNav = false;
+
+function voltarEtapa(){
+  const prev = PREV_STEP_MAP[step];
+  if(prev !== undefined){
+    goTo(prev);
+  } else if(step !== 'intro'){
+    goTo('intro');
+  }
+}
+
+// Suporte à navegação pela setinha do navegador / celular (Android / iOS)
+try {
+  history.replaceState({ step: 'intro' }, '', window.location.href);
+} catch(_) {}
+
+window.addEventListener('popstate', (e) => {
+  if(e.state && e.state.step !== undefined){
+    _isHistoryNav = true;
+    goTo(e.state.step);
+  } else {
+    const prev = PREV_STEP_MAP[step];
+    if(prev !== undefined){
+      _isHistoryNav = true;
+      goTo(prev);
+    }
+  }
+});
+
+// Suporte à tecla de seta esquerda do teclado
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowLeft'){
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if(tag !== 'INPUT' && tag !== 'TEXTAREA'){
+      voltarEtapa();
+    }
+  }
+});
+
+// ════════════════════════════════════════════
 //  NAVEGAÇÃO
 // ════════════════════════════════════════════
 function goTo(s){
@@ -1785,6 +1943,15 @@ function goTo(s){
   step=s;
 
   if(s===3 && !window._gridsRendered){renderGenderDependentGrids();window._gridsRendered=true}
+  restoreGridSelections();
+  updateHeaderBackBtn(s);
+
+  if(!_isHistoryNav && s !== 'checkout' && s !== 'redirect'){
+    try {
+      history.pushState({ step: s }, '', window.location.href);
+    } catch(_) {}
+  }
+  _isHistoryNav = false;
 
   const pw=document.getElementById('progWrap'),sc2=document.getElementById('stepCount');
   if(typeof s==='number'&&s>=1&&s<=TOTAL_STEPS){
@@ -2545,6 +2712,7 @@ const _goToOrig = goTo;
 window.goTo = function(s){
   const siteHeader = document.querySelector('.site-header');
   if(siteHeader) siteHeader.style.display = (s === 'checkout' || s === 'aprovado') ? 'none' : 'flex';
+  if(typeof updateHeaderBackBtn === 'function') updateHeaderBackBtn(s);
 
   if(s === 'checkout'){
     window.location.href = getCheckoutUrl();
